@@ -1,0 +1,24 @@
+default: &default
+ adapter: postgresql
+ encoding: unicode
+ pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+ username: postgres
+ password: postgres
+ host: localhost
+
+development:
+ <<: *default
+ database: liveheats_development
+
+test:
+ <<: *default
+ database: liveheats_test
+
+production:
+ <<: *default
+ database: <%= Rails.application.credentials.dig(:aws, :database) %>
+ username: <%= Rails.application.credentials.dig(:aws, :username) %>
+ password: <%= Rails.application.credentials.dig(:aws, :password) %>
+ host: <%= Rails.application.credentials.dig(:aws, :host) %>
+ port: <%= Rails.application.credentials.dig(:aws, :post) %>
+ sslmode: require
