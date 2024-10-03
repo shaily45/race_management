@@ -1,0 +1,28 @@
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+  <div class="bg-white p-5 rounded shadow-lg w-100" style="max-width: 500px;">
+    <% if flash[:alert] %>
+      <div class="alert alert-danger" role="alert">
+        <%= flash[:alert] %>
+      </div>
+    <% end %>
+
+    <h2 class="h4 font-weight-bold mb-4 text-center text-dark">Create a Race</h2>
+
+    <%= form_with url: races_path, method: :post, local: true, class: "needs-validation" do |form| %>
+      <div class="form-group mt-3">
+        <%= form.label :race_name, "Race Name", class: "form-label" %>
+        <%= form.text_field :race_name, placeholder: 'Race name', class: "form-control form-control-lg", required: true %>
+      </div>
+
+      <div class="form-group mt-3">
+        <%= form.label :student_ids, "Select Students", class: "form-label text-muted" %>
+        <%= form.select :student_ids, @students.map { |student| [student.name, student.id] }, { include_hidden: false }, multiple: true, class: "form-control form-select", required: true %>
+        <small class="form-text text-muted">Hold Ctrl (or Cmd on Mac) to select multiple students.</small>
+      </div>
+
+      <div class="form-group mt-4">
+        <%= form.submit "Create Race", class: "btn btn-primary w-100 py-2" %>
+      </div>
+    <% end %>
+  </div>
+</div>

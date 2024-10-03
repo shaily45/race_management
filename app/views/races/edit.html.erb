@@ -1,0 +1,34 @@
+<div class="bg-light p-4 rounded-lg shadow-lg" style="max-width: 600px; margin: 4rem auto;">
+  <% if flash[:alert] %>
+    <div class="alert alert-danger" role="alert">
+      <%= flash[:alert] %>
+    </div>
+  <% end %>
+
+  <h2 class="h4 mb-4 text-dark text-center">Edit Race</h2>
+
+  <%= form_with url: race_path(@race.id), method: :patch do |form| %>
+    <div class="mt-3">
+      <h5 class="mb-3 text-secondary">Participants</h5>
+      <% @race.student_races_list.each do |student_race| %>
+        <div class="mb-4 border p-3 rounded bg-white shadow-sm">
+          <%= form.label "user_keys_#{student_race.student_id}", "Student: #{student_race.student.name}", class: "form-label" %>
+          <%= form.hidden_field "student_ids[]", value: student_race.student_id %>
+
+          <p class="mb-2"><strong>Lane Number:</strong> <%= student_race.lane %></p>
+
+          <div class="mb-3">
+            <%= form.select "positions[]", (1..@race.students_list.size).to_a,
+              { selected: student_race.position, include_blank: 'Select Position' },
+              { class: "form-select", aria: { label: "Position for #{student_race.student.name}" } } %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="mt-4 d-flex justify-content-between">
+      <%= link_to "Back", races_path, class: "btn btn-outline-secondary me-2" %>
+      <%= form.submit "Update Race", class: "btn btn-primary btn-lg" %>
+    </div>
+  <% end %>
+</div>
